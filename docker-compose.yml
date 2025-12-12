@@ -1,24 +1,23 @@
-version: '3.8'
-
 services:
-  frontend:
-    build:
+  front:
+    build: 
       context: ./front-spa
-      dockerfile: Dockerfile.front
-    container_name: angular-front
+      dockerfile: dockerfile.front
+    container_name: front-spa
     ports:
       - "4200:4200"
     volumes:
       - ./front-spa:/app
       - /app/node_modules
-    command: npm run start
     depends_on:
-      - mockapi
-
-  mockapi:
-    image: clue/json-server
+      - back
+  back:
     container_name: mock-api
+    build: 
+      context: ./mock-api
+      dockerfile: dockerfile.api
     ports:
-      - "3000:80"
+      - "3000:3000"
     volumes:
-      - ./mock-api/db.json:/data/db.json
+      - ./mock-api/db.json:/app/db.json
+
