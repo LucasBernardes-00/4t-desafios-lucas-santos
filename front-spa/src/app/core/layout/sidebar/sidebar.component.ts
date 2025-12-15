@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from "@angular/core";
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from "@angular/core";
 import { InMenuTab, MenuType } from "./sidebar.model";
 import { RouterModule } from "@angular/router";
 
@@ -7,50 +7,59 @@ import { RouterModule } from "@angular/router";
   selector: 'app-sidebar',
   imports: [CommonModule, RouterModule],
   template: `
-    <div class="flex justify-center py-3">
-      <h1 class="text-3xl">Side Bar</h1>
-    </div>
+    <button 
+      (click)="onToggleMenuClick()"
+      class="bg-[#45C4B0] text-white text-2xl ml-4 mt-4 p-2 rounded-xl hover:scale-125 hover:cursor-pointer border-2 border-[#005461]"
+    >
+      <i class="pi pi-bars"></i>
+    </button>
 
-    <div>
-      @for(opt of menu; track opt.id) {
-        @if (opt.isTab) {
-          <div class="p-1 flex justify-center">
-            <button 
-              id={{opt.id}} 
-              #btnOption 
-              class="w-56 flex flex-row items-center justify-between p-1 rounded-xl hover:bg-[#00B7B5] hover:cursor-pointer" 
-              (click)="onToggleTab(opt)"
-            >
-              {{ opt.name }}
-              <i class="pi pi-caret-down"></i>
-            </button>
-          </div>
-          @for(item of opt.options; track item.id) {
-            <div class="p-1 flex justify-center hidden">
-              <button 
-                id={{item.id}} 
+    <div #sidebarMenu class="flex flex-col mb-4 ml-4 mt-3 rounded-xl bg-[#00B7B5] shadow-md">
+      <div class="flex justify-center py-3">
+        <h1 class="text-3xl">Side Bar</h1>
+      </div>
+      
+      <div>
+        @for(opt of menu; track opt.id) {
+          @if (opt.isTab) {
+            <div class="p-1 flex justify-center">
+              <button
+                id={{opt.id}}
                 #btnOption
-                [routerLink]="item.router" 
-                class="pl-6 w-56 flex flex-row items-center justify-between p-1 rounded-xl hover:bg-[#00B7B5] hover:cursor-pointer"
+                class="w-56 flex flex-row items-center justify-between p-1 rounded-xl hover:bg-[#F4F4F4] hover:cursor-pointer"
+                (click)="onToggleTab(opt)"
               >
-                {{ item.name }}
+                {{ opt.name }}
+                <i class="pi pi-caret-down"></i>
+              </button>
+            </div>
+            @for(item of opt.options; track item.id) {
+              <div class="p-1 flex justify-center hidden">
+                <button
+                  id={{item.id}}
+                  #btnOption
+                  [routerLink]="item.router"
+                  class="pl-6 w-56 flex flex-row items-center justify-between p-1 rounded-xl hover:bg-[#00B7B5] hover:cursor-pointer"
+                >
+                  {{ item.name }}
+                </button>
+              </div>
+            }
+          }
+          @else {
+            <div class="p-1 flex justify-center">
+              <button
+                id={{opt.id}}
+                #btnOption
+                [routerLink]="opt.router"
+                class="w-56 flex flex-row p-1 rounded-xl hover:bg-[#F4F4F4] hover:cursor-pointer"
+              >
+                {{ opt.name }}
               </button>
             </div>
           }
         }
-        @else {
-          <div class="p-1 flex justify-center">
-            <button 
-              id={{opt.id}} 
-              #btnOption
-              [routerLink]="opt.router"
-              class="w-56 flex flex-row p-1 rounded-xl hover:bg-[#00B7B5] hover:cursor-pointer"
-            >
-              {{ opt.name }}
-            </button>
-          </div>
-        }
-      } 
+      </div>
     </div>
   `
 })
@@ -58,6 +67,7 @@ export class SideBarComponent implements OnInit {
   menu!: MenuType
   
   @ViewChildren('btnOption') sidebarOptions!: QueryList<ElementRef<HTMLButtonElement>>
+  @ViewChild('sidebarMenu') sidebarMenu!: ElementRef<HTMLDivElement>
 
   constructor() { }
 
@@ -78,46 +88,6 @@ export class SideBarComponent implements OnInit {
         name: 'Planos',
         isTab: false,
         router: '/plano/listar'
-      },
-      { 
-        id: 30, 
-        name: 'Beneficiários',
-        isOpen: false,
-        isTab: true,
-        options: [
-          { 
-            id: 31, 
-            name: 'Ver todos',
-            isTab: false,
-            router: '/beneficiario/listar'
-          },
-          { 
-            id: 32, 
-            name: 'Novo',
-            isTab: false,
-            router: '/beneficiario/novo'
-          }
-        ]
-      },
-      { 
-        id: 40, 
-        name: 'Planos',
-        isOpen: false,
-        isTab: true,
-        options: [
-          { 
-            id: 41, 
-            name: 'Ver todos',
-            isTab: false,
-            router: '/plano/listar'
-          },
-          { 
-            id: 42, 
-            name: 'Novo',
-            isTab: false,
-            router: '/plano/novo'
-          }
-        ]
       }
     ]
   }
@@ -135,6 +105,10 @@ export class SideBarComponent implements OnInit {
     })
 
     tab.isOpen = !tab.isOpen
+  }
+
+  onToggleMenuClick() {
+    this.sidebarMenu.nativeElement.classList.toggle('hidden')
   }
 
   private openTab(optParent: HTMLDivElement, iconElement: HTMLElement) {
