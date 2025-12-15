@@ -1,36 +1,57 @@
 {
   "planos": [
-    {"id": 1, "nome":"Plano Bronze","codigo_registro_ans":"ANS-100001"},
-    {"id": 2, "nome":"Plano Prata","codigo_registro_ans":"ANS-100002"},
-    {"id": 3, "nome":"Plano Ouro","codigo_registro_ans":"ANS-100003"}
+    {
+      "id": "1",
+      "nome": "Plano Bronze",
+      "codigo_registro_ans": "ANS-100001"
+    },
+    {
+      "id": "2",
+      "nome": "Plano Prata",
+      "codigo_registro_ans": "ANS-100002"
+    },
+    {
+      "id": "3",
+      "nome": "Plano Ouro",
+      "codigo_registro_ans": "ANS-100003"
+    }
   ],
   "beneficiarios": [
     {
-      "id": 1,
+      "id": "1",
       "nome_completo": "João Pereira",
       "cpf": "11144477735",
       "data_nascimento": "1988-01-10",
       "status": "ATIVO",
-      "plano_id": 2,
+      "planoId": "2",
       "data_cadastro": "2025-01-10T10:30:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "nome_completo": "Ana Souza",
       "cpf": "98765432100",
       "data_nascimento": "1995-09-03",
       "status": "ATIVO",
-      "plano_id": 1,
+      "planoId": "1",
       "data_cadastro": "2025-02-15T11:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "nome_completo": "Maria Santos",
       "cpf": "10987654321",
       "data_nascimento": "1992-07-22",
       "status": "INATIVO",
-      "plano_id": 3,
+      "planoId": "3",
       "data_cadastro": "2025-03-20T12:45:00Z"
+    },
+    {
+      "nome_completo": "Lucas Santos",
+      "cpf": "17022834709",
+      "data_nascimento": "1996-05-27",
+      "status": "INATIVO",
+      "planoId": "1",
+      "data_cadastro": "2025-12-14T18:50:05.154Z",
+      "id": "2fa2"
     }
   ]
 }

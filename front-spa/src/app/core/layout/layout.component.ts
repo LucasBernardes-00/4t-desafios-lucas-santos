@@ -5,12 +5,12 @@ import { SideBarComponent } from "./sidebar/sidebar.component";
 
 @Component({
   selector: 'app-layout',
-  imports: [CommonModule, RouterOutlet, SideBarComponent],
+  imports: [CommonModule, RouterOutlet, SideBarComponent,],
   template: `
     <div class="flex flex-row h-screen bg-[#F4F4F4]">
       <app-sidebar class="w-64"></app-sidebar>
 
-      <div class="flex-1 bg-white">
+      <div class="flex-1 bg-[#45C4B0]">
         <router-outlet></router-outlet>
       </div>
     </div>

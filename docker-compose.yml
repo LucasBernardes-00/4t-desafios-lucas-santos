@@ -19,5 +19,5 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./mock-api/db.json:/app/db.json
+      - ./mock-api:/app
 

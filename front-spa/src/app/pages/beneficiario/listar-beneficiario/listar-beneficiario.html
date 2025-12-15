@@ -1,0 +1,87 @@
+<section class="mx-4 mt-3 px-4 py-3 bg-white rounded-lg">
+  <h1 class="text-2xl">Beneficiários</h1>
+</section>
+
+<section class="mx-4 mt-3 px-4 py-3 bg-white rounded-lg">
+  <div class="flex flex-row-reverse mb-2">
+    <button
+      routerLink="/beneficiario/novo"
+      class="px-1 rounded-lg bg-[#1bc95b] text-white w-16 hover:cursor-pointer"
+    >
+      Novo
+    </button>
+  </div>
+
+  <div class="flex flex-row">
+    <div class="flex-1 bg-[#012030] h-8 flex items-center rounded-tl-lg">
+      <span class="font-bold ml-4 text-amber-100">Nome</span>
+    </div>
+    <div class="flex-1 bg-[#012030] h-8 flex items-center">
+      <span class="font-bold text-amber-100">CPF</span>
+    </div>
+    <div class="flex-1 bg-[#012030] h-8 flex items-center">
+      <span class="font-bold text-amber-100">Nascimento</span>
+    </div>
+    <div class="flex-1 bg-[#012030] h-8 flex items-center">
+      <span class="font-bold text-amber-100">Status</span>
+    </div>
+    <div class="flex-1 bg-[#012030] h-8 flex items-center">
+      <span class="font-bold text-amber-100">Plano</span>
+    </div>
+    <div class="flex-1 bg-[#012030] h-8 flex items-center rounded-tr-lg">
+      <span class="font-bold text-amber-100">Ações</span>
+    </div>
+  </div>
+
+  @for (b of beneficiarios; track b.Id; let last = $last, even = $even, index = $index) {
+  <div class="flex flex-row">
+    <div
+      class="flex-1 rounded-bl-lg" [ngClass]="{ 'bg-[#9AEBA3]': even, 'bg-[#DAFDBA]': !even, 'rounded-bl-lg': last }"
+    >
+      <span class="ml-4">{{ b.Nome }}</span>
+    </div>
+    <div
+      class="flex-1"
+      [ngClass]="{ 'bg-[#9AEBA3]': even, 'bg-[#DAFDBA]': !even }"
+    >
+      <span class="">{{ b.CPF_Formatado }}</span>
+    </div>
+    <div
+      class="flex-1"
+      [ngClass]="{ 'bg-[#9AEBA3]': even,'bg-[#DAFDBA]': !even }"
+    >
+      <span class="">{{ b.DataNascimentoFormatada }}</span>
+    </div>
+    <div
+      class="flex-1"
+      [ngClass]="{ 'bg-[#9AEBA3]': even, 'bg-[#DAFDBA]': !even }"
+    >
+      <span class="">{{ b.Status }}</span>
+    </div>
+    <div
+      class="flex-1"
+      [ngClass]="{ 'bg-[#9AEBA3]': even, 'bg-[#DAFDBA]': !even }"
+    >
+      <span class="">{{ b.Plano_Nome }}</span>
+    </div>
+    <div
+      class="flex-1 rounded-br-lg"
+      [ngClass]="{ 'bg-[#9AEBA3]': even, 'bg-[#DAFDBA]': !even, 'rounded-br-lg': last }"
+    >
+      <button
+        (click)="onEditBeneficiario(b.Id)"
+        class="p-0.5 hover:cursor-pointer hover:scale-110"
+      >
+        <i class="pi pi-pen-to-square"></i>
+      </button>
+
+      <button
+        (click)="onDeleteBeneficiario(b.Id!, index)"
+        class="p-0.5 hover:cursor-pointer hover:scale-110 ml-1"
+      >
+        <i class="pi pi-trash"></i>
+      </button>
+    </div>
+  </div>
+  }
+</section>

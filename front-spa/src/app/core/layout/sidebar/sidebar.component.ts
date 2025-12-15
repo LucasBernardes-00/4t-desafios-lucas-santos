@@ -29,7 +29,8 @@ import { RouterModule } from "@angular/router";
             <div class="p-1 flex justify-center hidden">
               <button 
                 id={{item.id}} 
-                #btnOption 
+                #btnOption
+                [routerLink]="item.router" 
                 class="pl-6 w-56 flex flex-row items-center justify-between p-1 rounded-xl hover:bg-[#00B7B5] hover:cursor-pointer"
               >
                 {{ item.name }}
@@ -42,7 +43,7 @@ import { RouterModule } from "@angular/router";
             <button 
               id={{opt.id}} 
               #btnOption
-              routerLink="teste"
+              [routerLink]="opt.router"
               class="w-56 flex flex-row p-1 rounded-xl hover:bg-[#00B7B5] hover:cursor-pointer"
             >
               {{ opt.name }}
@@ -69,12 +70,14 @@ export class SideBarComponent implements OnInit {
       { 
         id: 10, 
         name: 'Beneficiários',
-        isTab: false
+        isTab: false,
+        router: '/beneficiario/listar'
       },
       { 
         id: 20, 
         name: 'Planos',
-        isTab: false
+        isTab: false,
+        router: ''
       },
       { 
         id: 30, 
@@ -85,12 +88,14 @@ export class SideBarComponent implements OnInit {
           { 
             id: 31, 
             name: 'Ver todos',
-            isTab: false
+            isTab: false,
+            router: '/beneficiario/listar'
           },
           { 
             id: 32, 
             name: 'Novo',
-            isTab: false
+            isTab: false,
+            router: '/beneficiario/novo'
           }
         ]
       },
@@ -103,12 +108,14 @@ export class SideBarComponent implements OnInit {
           { 
             id: 41, 
             name: 'Ver todos',
-            isTab: false 
+            isTab: false,
+            router: '' 
           },
           { 
             id: 42, 
             name: 'Novo',
-            isTab: false
+            isTab: false,
+            router: ''
           }
         ]
       }
@@ -117,8 +124,7 @@ export class SideBarComponent implements OnInit {
 
   onToggleTab(tab: InMenuTab) {
     const tabButton = this.sidebarOptions.find(el => el.nativeElement.id === tab.id.toString())?.nativeElement!
-
-    let tabChildren = (this.menu.find(opt => opt.id === tab.id) as InMenuTab).options
+    const tabChildren = (this.menu.find(opt => opt.id === tab.id) as InMenuTab).options
 
     tabChildren.forEach(opt => {
       const optionBtn = this.sidebarOptions.find(el => el.nativeElement.id === opt.id.toString())?.nativeElement!

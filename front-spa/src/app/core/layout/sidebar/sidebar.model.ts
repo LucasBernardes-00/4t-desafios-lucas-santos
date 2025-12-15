@@ -12,4 +12,5 @@ export interface InMenuOption {
   id: number
   name: string
   isTab: false
+  router: string
 }
