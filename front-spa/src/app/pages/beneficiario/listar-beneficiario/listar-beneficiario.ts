@@ -8,6 +8,19 @@ import { Plano } from "../../../core/models/plano"
 import { ErrorDialogService } from "../../../shared/services/error-dialog.service"
 import { ConfirmActionService } from "../../../shared/services/modal-confirmation.service"
 import { SuccessDialogService } from "../../../shared/services/success-dialog.service"
+import { PlanosHttp } from "../../../core/http/planos.http"
+import { InPlano } from "../../../core/http/interfaces/planos"
+
+interface inListaBeneficiarioFiltro {
+  status: {
+    inUse: boolean,
+    value: 'ATIVO' | 'INATIVO' | ''
+  },
+  plano: {
+    inUse: boolean,
+    id: string
+  }
+}
 
 @Component({
   selector: 'app-listar-beneficiario',
@@ -16,8 +29,21 @@ import { SuccessDialogService } from "../../../shared/services/success-dialog.se
 })
 export class ListarBeneficiario implements OnInit {
   beneficiarios: Beneficiario[] = []
+  planos: InPlano[] = []
+
+  private filter: inListaBeneficiarioFiltro = {
+    status: {
+      inUse: false,
+      value: ""
+    },
+    plano: {
+      inUse: false,
+      id: ""      
+    }
+  }
 
   private http = inject(BeneficiarioHttp)
+  private planosHttp = inject(PlanosHttp)
   private cd = inject(ChangeDetectorRef)
   private router = inject(Router)
 
@@ -29,6 +55,7 @@ export class ListarBeneficiario implements OnInit {
 
   ngOnInit(): void {
     this.searchBeneficiarios()
+    this.buildPlanosDropdown()
   }
 
   private searchBeneficiarios() {
@@ -55,6 +82,24 @@ export class ListarBeneficiario implements OnInit {
 
   onEditBeneficiario(id: string) {
     this.router.navigate(['/beneficiario/editar'], {queryParams: {'id': id}})
+  }
+
+  onSelectStatus(event: Event) {
+    const select = event.target as HTMLSelectElement
+
+    this.filter.status.inUse = !(select.value === "")
+    this.filter.status.value = select.value as ('ATIVO' | 'INATIVO' | '')
+    
+    this.applyFilter()
+  }
+
+  onSelectPlano(event: Event) {
+    const select = event.target as HTMLSelectElement
+
+    this.filter.plano.inUse = !(select.value === "")
+    this.filter.plano.id = select.value
+
+    this.applyFilter()
   }
 
   private deleteBeneficiario(id: string, index: number) {
@@ -85,5 +130,49 @@ export class ListarBeneficiario implements OnInit {
       b.data_cadastro,
       b.id.toString()
     ))
+  }
+
+  private buildPlanosDropdown() {
+    this.planosHttp.list()
+      .subscribe({
+        next: (value) => {
+          this.planos = value
+          this.cd.detectChanges()
+        },
+        error: (error) => { 
+          this.planos = []
+         }
+      })
+  }
+
+  private applyFilter() {
+    this.http.getBeneficiarios_WithFilter(this.buildFilter())
+      .subscribe({
+        next: (value) => {
+          this.buildDataForTable(value)
+          this.cd.detectChanges()
+        },
+        error: (error) => { 
+          this.errorDialogService
+          .setMessages(['Erro ao tentar carregar beneficiários'])
+          .show()
+         }
+      })
+  }
+
+  private buildFilter() {
+    let filter: string = ''
+
+    if(this.filter.plano.inUse && this.filter.status.inUse) {
+      filter = `&status=${this.filter.status.value}&planoId=${this.filter.plano.id}`
+    }
+    else if(this.filter.plano.inUse) {
+      filter = `&planoId=${this.filter.plano.id}`
+    }
+    else if(this.filter.status.inUse) {
+      filter = `&status=${this.filter.status.value}`
+    }
+
+    return filter
   }
 }

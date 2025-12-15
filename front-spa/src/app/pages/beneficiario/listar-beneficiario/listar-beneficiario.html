@@ -3,10 +3,43 @@
 </section>
 
 <section class="mx-4 mt-3 px-4 py-3 bg-white rounded-lg">
-  <div class="flex flex-row-reverse mb-2">
+  <div class="flex flex-row mb-2 justify-between">
+    <div class="flex flex-row">
+      <div class="flex flex-row items-center mr-2">
+        <label for="status" class="block text-surface-900 font-medium mr-2">
+          Status
+        </label>
+        <select
+          id="status"
+          class="border-2 border-gray-300 py-1 px-2 rounded-xl"
+          (change)="onSelectStatus($event)"
+        >
+          <option value=""></option>
+          <option value="ATIVO">Ativo</option>
+          <option value="INATIVO">Inativo</option>
+        </select>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <label for="planoId" class="block text-surface-900 font-medium mr-2">
+          Plano
+        </label>
+        <select
+          id="planoId "
+          class="border-2 border-gray-300 py-1 px-2 rounded-xl"
+          (change)="onSelectPlano($event)"
+        >
+          <option [value]=""></option>
+          @for (p of planos; track p.id; let first = $first) {
+            <option [value]="p.id">{{ p.nome }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
     <button
       routerLink="/beneficiario/novo"
-      class="px-1 rounded-lg bg-[#1bc95b] text-white w-16 hover:cursor-pointer hover:scale-110"
+      class="px-1 rounded-lg bg-[#1bc95b] text-white hover:cursor-pointer hover:scale-110"
     >
       Novo
     </button>

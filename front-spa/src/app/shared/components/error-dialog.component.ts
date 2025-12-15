@@ -13,7 +13,7 @@ import { ErrorDialogService } from "../services/error-dialog.service";
         'hidden': !service.IsVisible
       }"        
     >
-      <div class="z-50 absolute top-[30%] start-[40%] w-auto bg-white rounded-xl">
+      <div class="z-50 absolute top-[30%] start-[30%] w-3xl bg-white rounded-xl">
         <div class="flex justify-end pr-2 pt-2">
           <button 
             (click)="onCloseClick()" 
@@ -33,7 +33,7 @@ import { ErrorDialogService } from "../services/error-dialog.service";
           @for (msg of service.Messages; track $index) {
             <div class="flex items-center justify-center gap-2 mx-40">
               <i class="pi pi-info-circle text-[#ff675b]"></i>
-              <p class="text-base text-gray-500" [innerHTML]="service.Messages[$index]"></p>
+              <p class="text-base text-gray-500 text-wrap" [innerHTML]="service.Messages[$index]"></p>
             </div>
           }
         </div>

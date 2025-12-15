@@ -36,4 +36,12 @@ export class BeneficiarioHttp {
   getById(id: string) {
     return this.http.get<InBeneficiario>(`${this.apiUrl}/${id}`)
   }
+
+  async getByPlano(planoId: string) {
+    return await firstValueFrom(this.http.get<InBeneficiario[]>(`${this.apiUrl}?planoId=${planoId}`))
+  }
+
+  getBeneficiarios_WithFilter(filter: string = "") {
+    return this.http.get<InBeneficiario[]>(`${this.apiUrl}?_embed=plano${filter}`)
+  }
 }
