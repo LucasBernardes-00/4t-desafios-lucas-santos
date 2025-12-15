@@ -81,7 +81,7 @@ export class ListarBeneficiario implements OnInit {
       b.cpf,
       new Date(b.data_nascimento),
       b.status,
-      new Plano(b.plano.id, b.plano.nome, b.plano.codigo_registro_ans),
+      new Plano(b.plano.id!, b.plano.nome, b.plano.codigo_registro_ans),
       b.data_cadastro,
       b.id.toString()
     ))

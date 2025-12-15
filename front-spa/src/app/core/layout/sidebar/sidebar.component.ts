@@ -77,7 +77,7 @@ export class SideBarComponent implements OnInit {
         id: 20, 
         name: 'Planos',
         isTab: false,
-        router: ''
+        router: '/plano/listar'
       },
       { 
         id: 30, 
@@ -109,13 +109,13 @@ export class SideBarComponent implements OnInit {
             id: 41, 
             name: 'Ver todos',
             isTab: false,
-            router: '' 
+            router: '/plano/listar'
           },
           { 
             id: 42, 
             name: 'Novo',
             isTab: false,
-            router: ''
+            router: '/plano/novo'
           }
         ]
       }

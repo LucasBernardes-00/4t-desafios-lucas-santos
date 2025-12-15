@@ -6,8 +6,6 @@ export class Plano {
   ) { }
 
   get Id(): string { return this.id }
-
   get Nome(): string { return this.nome }
-
-  get CodigoRegistroAns(): string { return this.codigo_registro_ans }
+  get RegistroAns(): string { return this.codigo_registro_ans }
 }

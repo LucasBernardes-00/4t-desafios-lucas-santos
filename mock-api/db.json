@@ -14,6 +14,11 @@
       "id": "3",
       "nome": "Plano Ouro",
       "codigo_registro_ans": "ANS-100003"
+    },
+    {
+      "nome": "Plano Diamante",
+      "codigo_registro_ans": "ANS-100004",
+      "id": "076e"
     }
   ],
   "beneficiarios": [
@@ -27,13 +32,13 @@
       "data_cadastro": "2025-01-10T10:30:00Z"
     },
     {
-      "id": "2",
       "nome_completo": "Ana Souza",
       "cpf": "98765432100",
       "data_nascimento": "1995-09-03",
-      "status": "ATIVO",
+      "status": "INATIVO",
       "planoId": "1",
-      "data_cadastro": "2025-02-15T11:00:00Z"
+      "data_cadastro": "2025-02-15T11:00:00Z",
+      "id": "2"
     },
     {
       "id": "3",
@@ -46,10 +51,10 @@
     },
     {
       "nome_completo": "Lucas Santos",
-      "cpf": "17022834709",
+      "cpf": "17022834710",
       "data_nascimento": "1996-05-27",
-      "status": "INATIVO",
-      "planoId": "1",
+      "status": "ATIVO",
+      "planoId": "076e",
       "data_cadastro": "2025-12-14T18:50:05.154Z",
       "id": "2fa2"
     }

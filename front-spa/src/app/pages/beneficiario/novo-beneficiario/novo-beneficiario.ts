@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { BeneficiarioHttp } from '../../../core/http/beneficiario.http'
-import { PlanosHttp } from '../../../core/http/planos.http'
-import { InPlano } from '../../../core/http/interfaces/planos'
 import { InBeneficiario } from '../../../core/http/interfaces/beneficiario'
-import { SuccessDialogService } from '../../../shared/services/success-dialog.service'
+import { InPlano } from '../../../core/http/interfaces/planos'
+import { PlanosHttp } from '../../../core/http/planos.http'
 import { ErrorDialogService } from '../../../shared/services/error-dialog.service'
+import { SuccessDialogService } from '../../../shared/services/success-dialog.service'
 
 @Component({
   selector: 'app-novo-beneficiario',
@@ -15,7 +15,6 @@ import { ErrorDialogService } from '../../../shared/services/error-dialog.servic
   templateUrl: './novo-beneficiario.html',
 })
 export class NovoBeneficiario implements OnInit {
-  private cd = inject(ChangeDetectorRef)
   private formBuilder = inject(NonNullableFormBuilder)
   private router = inject(Router)
   private activatedRoute = inject(ActivatedRoute)
@@ -34,12 +33,12 @@ export class NovoBeneficiario implements OnInit {
     data_cadastro: [new Date().toISOString()]
   })
 
-  private beneficiarioId!: string
-
   public planos: InPlano[] = []
   public pageMode: 'create' | 'update' = 'create'
   public pageTitle: string = ''
-
+  
+  private beneficiarioId!: string
+  private beneficiarioCPF!: string
 
   ngOnInit() {
     this.buildPlanosDropdown()
@@ -66,6 +65,7 @@ export class NovoBeneficiario implements OnInit {
       .subscribe({
         next: (value) => {
           this.setForm_ToEdit(value)
+          this.beneficiarioCPF = value.cpf
         },
         error: (err) => { 
           this.errorDialogService
@@ -97,7 +97,7 @@ export class NovoBeneficiario implements OnInit {
         next: (value) => {
           this.successDialogService
             .setMessage('Beneficiário cadastrado')
-            .setOnConfirm(this.redirectToList.bind(this))
+            .setOnConfirm(this.returnToList.bind(this))
             .show()
         },
         error: (err) => { 
@@ -121,7 +121,7 @@ export class NovoBeneficiario implements OnInit {
         next: (value) => {
           this.successDialogService
             .setMessage('Beneficiário atualizado')
-            .setOnConfirm(this.redirectToList.bind(this))
+            .setOnConfirm(this.returnToList.bind(this))
             .show()
         },
         error: (err) => { 
@@ -174,16 +174,18 @@ export class NovoBeneficiario implements OnInit {
 
     if (result.length <= 0) return true
 
-    errors.push(`CPF já cadastrado.`)
+    errors.push(`<strong>CPF</strong> já cadastrado.`)
     return false
   }
 
   async validateCPF_OnUpdate(errors: string[]) {
-    let result = await this.http.getByCPF(this._form.value.cpf!)
+    if (this.beneficiarioCPF === this._form.controls.cpf.value) return true
 
-    if (result.length >= 0 && result[0].id === this.beneficiarioId) return true
+    let result = await this.http.getByCPF(this._form.controls.cpf.value)
 
-    errors.push(`CPF já cadastrado em outro usuário.`)
+    if (result.length <= 0) return true
+
+    errors.push(`<strong>CPF</strong> já cadastrado em outro usuário.`)
     return false
   }
 
@@ -193,15 +195,11 @@ export class NovoBeneficiario implements OnInit {
         next: (value) => {
           this.planos = value
           if (this.planos.length > 0)
-            this._form.controls.planoId.setValue(this.planos[0].id)
+            this._form.controls.planoId.setValue(this.planos[0].id!)
         },
         error: (error) => { 
           this.planos = []
          }
       })
-  }
-
-  private redirectToList() {
-    this.router.navigate(['/beneficiario/listar'])
   }
 }
